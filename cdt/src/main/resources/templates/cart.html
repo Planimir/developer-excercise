@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CloudruidTask</title>
+    <link href="webjars/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="row">
+    <div class="col">
+        <th:block th:include="~{fragments/nav}"/>
+    </div>
+</div>
+<div class="row mx-2">
+    <div class="col">
+        <h1>Cart - Products</h1>
+    </div>
+</div>
+<div class="row mx-2">
+    <div class="col-12">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="e : ${cart}">
+                <td><span th:text="${e.product.name}"></span></td>
+                <td><span th:text="${e.product.price}"></span></td>
+                <td>
+                    <div class="row">
+                        <div class="col flex-grow-0 text-nowrap">
+                            <form method="POST" th:action="@{/cart/add/{product_id}(product_id=${e.product.id})}">
+                                <button class="btn btn-success" type="submit" name="submit">Add more</button>
+                            </form>
+                        </div>
+                        <div class="col flex-grow-1">
+                            <form method="POST" th:action="@{/cart/remove/{product_id}(product_id=${e.order})}">
+                                <button class="btn btn-danger" type="submit" name="submit">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row mx-2">
+    <div class="col flex-grow-0 text-nowrap">
+        <a class="btn btn-info text-white" th:href="@{/products}">Go to products</a>
+    </div>
+    <div class="col flex-grow-1" th:if="${not #lists.isEmpty(cart)}">
+        <a class="btn btn-success text-white" th:href="@{/checkout}">Checkout</a>
+    </div>
+</div>
+</body>
+</html>
